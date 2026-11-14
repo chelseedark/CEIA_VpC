@@ -1,54 +1,98 @@
+
 # TP2 - Visión por Computadora I
 
-Esta carpeta contiene la resolución del TP2 de la materia Visión por Computadora I (CEIA / FIUBA). El trabajo consiste en implementar un detector de máximo enfoque sobre un video aplicando análisis espectral, similar al que usan las cámaras digitales modernas. Para medir el enfoque se implementa la métrica propuesta en el paper "Image Sharpness Measure for Blurred Images in Frequency Domain", que cuenta las componentes de alta frecuencia del espectro centrado de cada frame.
+**CEIA - Facultad de Ingeniería, Universidad de Buenos Aires**
 
-## Contenido
+**Alumnos:** Corominas - Fierens - Yanez Flores
 
-- `TP2.ipynb`: resolución del trabajo práctico.
-- `focus_video.mov`: video de entrada a procesar.
-- `ImageSharpnessMeasureforBlurredImagesinFrequency.pdf`: paper de referencia con la métrica a implementar.
-- `README.md`: este archivo.
+## Objetivo
 
-## Entorno
+Implementar un detector automático de enfoque sobre un video mediante el análisis de su contenido frecuencial.
 
-Para correr el notebook se usa un entorno conda llamado `vision_cv`. Fue creado a partir del entorno `ia_env` (armado previamente durante la cursada) agregando la librería de OpenCV, que es la única que faltaba para este trabajo.
+Se utiliza la métrica FM propuesta por De y Masilamani (2013) en el artículo *Image Sharpness Measure for Blurred Images in Frequency Domain*.
 
-Características del entorno:
+Se realizan dos experimentos:
 
-- Python 3.12.13
-- opencv-python 5.0.0
-- numpy 2.5.0
-- scipy 1.18.0
-- matplotlib 3.11.0
-- jupyter (IPython 9.15.0, notebook)
+1. Cálculo de FM sobre el fotograma completo.
+2. Cálculo de FM sobre una región de interés (ROI) central, equivalente al 8 % del área del fotograma.
 
-## Creación del entorno en esta computadora
+Se analiza la evolución temporal de la métrica y se identifican automáticamente los intervalos de mayor enfoque mediante un umbral relativo al máximo de FM.
 
-El entorno local se creó con estos comandos:
+Como punto adicional, se aplica *unsharp masking* para evaluar su efecto sobre la métrica y los intervalos detectados.
 
-```
+## Contenido del repositorio
+
+- `TP2.ipynb`: desarrollo del trabajo práctico, código, gráficos, resultados y conclusiones.
+- `focus_video.mov`: video utilizado en los experimentos.
+- `ImageSharpnessMeasureforBlurredImagesinFrequency.pdf`: artículo de referencia.
+- `README.md`: instrucciones de ejecución.
+
+## Entorno de desarrollo
+
+El trabajo se desarrolló utilizando Python 3.12 y un entorno conda denominado `vision_cv`.
+
+El entorno local se creó clonando `ia_env`, utilizado previamente durante la cursada, e instalando OpenCV.
+
+```bash
 conda create -n vision_cv --clone ia_env
 conda activate vision_cv
 pip install opencv-python
 ```
 
-## Creación del entorno en otra computadora
+## Instalación en otra computadora
 
-Para reproducir el entorno desde cero en otra máquina alcanza con:
+Para ejecutar el notebook desde cero, se recomienda tener instalado Anaconda o Miniconda.
 
-```
+Crear y activar un entorno independiente:
+
+```bash
 conda create -n vision_cv python=3.12
 conda activate vision_cv
-pip install opencv-python numpy scipy matplotlib jupyter
 ```
 
-## Cómo ejecutar el notebook
+Instalar las bibliotecas necesarias:
 
-Con el entorno activado, abrir Jupyter y lanzar el notebook:
-
+```bash
+python -m pip install opencv-python numpy pandas matplotlib jupyter
 ```
+
+Las bibliotecas utilizadas son:
+
+- **OpenCV:** lectura del video y procesamiento de imágenes.
+- **NumPy:** cálculos numéricos y transformada de Fourier.
+- **Pandas:** organización y presentación de resultados.
+- **Matplotlib:** gráficos y visualización de imágenes.
+- **Jupyter:** ejecución del notebook.
+
+## Ejecución
+
+1. Descargar o clonar el repositorio.
+2. Abrir una terminal en la carpeta que contiene `TP2.ipynb` y `focus_video.mov`.
+3. Activar el entorno e iniciar Jupyter:
+
+```bash
 conda activate vision_cv
 jupyter notebook TP2.ipynb
 ```
 
-La carpeta de trabajo debe ser esta misma carpeta, porque el notebook lee el video con rutas relativas.
+4. En Jupyter, seleccionar **Restart Kernel and Run All Cells** para ejecutar el trabajo completo desde el comienzo.
+
+El notebook utiliza rutas relativas. Por lo tanto, el directorio de trabajo debe contener el archivo `focus_video.mov`.
+
+## Resultados
+
+El notebook presenta:
+
+- Implementación de los seis pasos de la métrica FM.
+- Evolución temporal de FM para el fotograma completo y la ROI central.
+- Detección automática del intervalo de enfoque mediante un umbral del 80 % del máximo de FM.
+- Análisis de sensibilidad para umbrales del 80 %, 85 % y 90 %.
+- Aplicación de unsharp masking y comparación de los intervalos detectados.
+- Tablas, gráficos, discusión y conclusiones.
+
+Los resultados se presentan directamente en el notebook y no requieren archivos de salida adicionales.
+
+## Referencia
+
+De, K., & Masilamani, V. (2013). *Image Sharpness Measure for Blurred Images in Frequency Domain*. Procedia Engineering, 64, 149–158.
+
